@@ -39,7 +39,6 @@ case class BoomCoreParams(
   enableCustomRfModel: Boolean = true,
   maxBrCount: Int = 4,
   numFetchBufferEntries: Int = 16,
-  useNewFetchBuffer: Boolean = true,
   enableAgePriorityIssue: Boolean = true,
   enablePrefetching: Boolean = false,
   enableFastLoadUse: Boolean = true,
@@ -79,7 +78,7 @@ case class BoomCoreParams(
   mtvecWritable: Boolean = true,
   haveCFlush: Boolean = false,
   mulDiv: Option[freechips.rocketchip.rocket.MulDivParams] = Some(MulDivParams(divEarlyOut=true)),
-  nBreakpoints: Int = 1,
+  nBreakpoints: Int = 0, // TODO Fix with better frontend breakpoint unit
   nL2TLBEntries: Int = 512,
   nLocalInterrupts: Int = 0,
   useAtomics: Boolean = true,
@@ -159,7 +158,6 @@ trait HasBoomCoreParameters extends freechips.rocketchip.tile.HasCoreParameters
   val maxBrCount    = boomParams.maxBrCount          // number of branches we can speculate simultaneously
   val ftqSz         = boomParams.ftq.nEntries        // number of FTQ entries
   val numFetchBufferEntries = boomParams.numFetchBufferEntries // number of instructions that stored between fetch&decode
-  val useNewFetchBuffer = boomParams.useNewFetchBuffer
 
   val numIntPhysRegs= boomParams.numIntPhysRegisters // size of the integer physical register file
   val numFpPhysRegs = boomParams.numFpPhysRegisters  // size of the floating point physical register file
@@ -184,7 +182,7 @@ trait HasBoomCoreParameters extends freechips.rocketchip.tile.HasCoreParameters
   val intToFpLatency = boomParams.intToFpLatency
 
   val fetchLatency = boomParams.fetchLatency // how many cycles does fetch occupy?
-  require (Seq(3, 4).contains(fetchLatency)) // 3 and 4 cycle fetch supported
+  require (fetchLatency == 4) // Only 4-cycle fetch is supported
   val renameLatency = boomParams.renameLatency // how many cycles does rename occupy?
 
   val enableBrResolutionRegister = boomParams.enableBrResolutionRegister
