@@ -8,7 +8,7 @@
 #include "dromajo_wrapper.h"
 #include <fesvr/htif.h>
 
-#define MAX_ARGS 20
+#define MAX_ARGS 24
 #define MAX_STR_LEN 24
 
 dromajo_t *dromajo = 0;
@@ -160,6 +160,10 @@ extern "C" int dromajo_init(
     local_argv[local_argc] = (char*)"--memory_size";
     local_argc += 1;
     local_argv[local_argc] = (char*)mem_size;
+    local_argc += 1;
+    local_argv[local_argc] = (char*)"--save";
+    local_argc += 1;
+    local_argv[local_argc] = (char*)"dromajo_boom_snap";
     local_argc += 1;
 
     if (strlen(dtb_file) != 0) {
